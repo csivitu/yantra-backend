@@ -8,6 +8,7 @@ import * as cors from 'cors';
 import AppError from './managers/AppError';
 import connectToDB from './managers/DB';
 import envHandler from './managers/envHandler';
+import userRouter from './routers/userRouter';
 
 const app: Express = express();
 
@@ -27,6 +28,8 @@ connectToDB();
 app.listen(envHandler('PORT'), () => {
     console.log(`Server is running on http://127.0.0.1:${process.env.PORT}`);
 });
+
+app.use('/auth', userRouter);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     next(new AppError(`Cannot find ${req.originalUrl}`, 404));
